@@ -1,0 +1,78 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canavar Avı</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="css/foundation.min.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+
+<!-- Kullanıcı Can Barı -->
+    <section class="row">
+        <div class="small-6 columns">
+            <h1 class="text-center">Player</h1>
+            <div class="healthbar">
+                <!-- :style kullandık. width değerini dinamik olarak oyuncunun canı kadar alıyoruz. (computed ile return) -->
+                <div class="healthbar text-center" :style="user_progress" style="background-color: green; margin: 0; color: white;">
+                        {{ player_heal }}%
+                </div>
+            </div>
+        </div>
+
+ <!-- Canavar Can Barı -->
+        <div class="small-6 columns">
+            <h1 class="text-center">Monster</h1>
+            <div class="healthbar">
+ <!-- :style kullandık. width değerini dinamik olarak canavarın canı kadar alıyoruz. (computed ile return) -->
+                <div  class="healthbar text-center" :style="monster_progress" style="background-color: blue; margin: 0; color: white;">
+                     {{ monster_heal }}%
+                </div>
+            </div>
+        </div>
+    </section>
+  
+
+     <!--  Eğer game_is_on : false ise burası gözükecek. Yani oyun başlamamışsa.-->
+    <section class="row controls" v-if="!game_is_on">
+        <div class="small-12 columns">
+            <button id="start-game" @click="start_game">YENİ OYUN</button>
+        </div>
+    </section>
+
+    <!--  Eğer game_is_on : true ise burası gözükecek. Yani oyun başlamışsa.-->
+    <section class="row controls" v-if="game_is_on">
+        <div class="small-12 columns">
+            <button id="attack" @click="attack">SALDIRI</button>
+            <button id="special-attack" @click="special_attack">ÖZEL SALDIRI</button>
+            <button id="heal" @click="heal_up">İLK YARDIM</button>
+            <button id="give-up" @click="give_up">PES ET!</button>
+        </div>
+    </section>
+
+    <h1 class="small-12 columns row text-center" v-if="logs.length > 0">Log</h1>
+    <!-- logs array içerisindeki sayı 0'dan büyükse göster.  -->
+    <section class="row log" v-if="logs.length > 0">
+        <div class="small-12 columns">
+            <ul>
+
+                <!-- 1. log.turn eğer p olanlara player turn class uygula. değil ise log.turn m olanlara monster-turn class uygula. -->
+                <!-- 2. logs array'indeki verileri getir. -->
+
+                <li 
+                :class="{ 'player-turn' : logsGetir.turn == 'p' , 'monster-turn' : logsGetir.turn == 'm' }" 
+                v-for="logsGetir in logs"> {{ logsGetir.turn }} - {{ logsGetir.text }}</li>
+            </ul>
+        </div>
+    </section>
+
+</div>
+
+<script src="app1.js"></script>
+
+</body>
+</html>
